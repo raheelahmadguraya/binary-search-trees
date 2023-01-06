@@ -53,13 +53,39 @@ const insertNode = (root = null, value) => {
   return root;
 };
 
-const deleteNode = (root = null, value) => {
+const minValue = (root) => {
+  let minv = root.data;
+  while (root.left != null) {
+    minv = root.left.data;
+    root = root.left;
+  }
+  return minv;
+};
+
+const deleteNode = (root = null, data) => {
   if (root == null) {
     return root;
   }
+
+  if (data < root.data) {
+    root.left = deleteNode(root.left, data);
+  } else if (data > root.data) {
+    root.right = deleteNode(root.right, data);
+  } else {
+    if (root.left == null) {
+      return root.right;
+    } else if (root.right == null) {
+      return root.left;
+    }
+    root.data = minValue(root.right);
+    root.right = deleteNode(root.right, root.value);
+  }
+  return root;
 };
 
 prettyPrint(tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]));
 root = tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 console.log(insertNode(root, 593));
+prettyPrint(root);
+console.log(deleteNode(root, 67));
 prettyPrint(root);
