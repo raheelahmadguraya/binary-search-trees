@@ -83,9 +83,28 @@ const deleteNode = (root = null, data) => {
   return root;
 };
 
+const findNode = (root = null, data) => {
+  if (root == null) {
+    return 'Tree node does not exist';
+  }
+  if (data == root.data) {
+    return root;
+  } else if (data < root.data) {
+    const foundRoot = findNode(root.left, data);
+    return foundRoot;
+  } else if (data > root.data) {
+    const foundRoot = findNode(root.right, data);
+    return foundRoot;
+  } else {
+    return 'Tree node does not exist';
+  }
+};
+
 prettyPrint(tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]));
 root = tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 console.log(insertNode(root, 593));
 prettyPrint(root);
 console.log(deleteNode(root, 67));
 prettyPrint(root);
+console.log(findNode(root, 325));
+prettyPrint(findNode(root, 324));
