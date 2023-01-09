@@ -100,11 +100,72 @@ const findNode = (root = null, data) => {
   }
 };
 
-prettyPrint(tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]));
+const queue = (node) => {
+  const items = [node];
+
+  const enqueue = (item) => {
+    items.push(item);
+    return item + ' inserted';
+  };
+
+  const dequeue = () => {
+    const item = items[0];
+    items.splice(0, 1);
+    return item;
+  };
+
+  return {
+    items,
+    enqueue,
+    dequeue,
+  };
+};
+
+const levelOrder = (root = null, func = null) => {
+  let levelOrderBST = [];
+  if (root == null) return;
+  let Q = queue(root);
+  while (Q.items.length > 0) {
+    const current = Q.dequeue();
+    if (current.left != null) Q.enqueue(current.left);
+    if (current.right != null) Q.enqueue(current.right);
+    levelOrderBST.push(current);
+  }
+  return levelOrderBST;
+};
+
+const inorder = (root = null) => {
+  if (root == null) return;
+  let inorderBST = [];
+  let stack = [];
+  let temp = root;
+  while (temp != null || stack.length != 0) {
+    if (temp != null) {
+      stack.unshift(temp);
+      temp = temp.left;
+    } else {
+      temp = stack[0];
+      stack.shift();
+      if (temp.data) {
+        console.log(temp.data);
+        inorderBST.push(temp.data);
+      }
+      temp = temp.right;
+    }
+  }
+  return inorderBST;
+};
+
+const preorder = (root = null) => {
+  if (root == null) return 'Nothing';
+};
+const postorder = (root = null) => {
+  if (root == null) return 'Nothing';
+};
+
+const traverse = (method, root) => {};
+
 root = tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-console.log(insertNode(root, 593));
 prettyPrint(root);
-console.log(deleteNode(root, 67));
-prettyPrint(root);
-console.log(findNode(root, 325));
-prettyPrint(findNode(root, 324));
+console.log(levelOrder(root));
+console.log(inorder(root));
