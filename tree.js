@@ -205,9 +205,70 @@ const postorder = (root = null) => {
   return postorderBST;
 };
 
-root = tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+const height = (node = null) => {
+  if (node == null) return 0;
+
+  return Math.max(height(node.left), height(node.right)) + 1;
+};
+
+const depth = (root, node) => {
+  if (root == null) return -1;
+
+  let dist = -1;
+
+  if (
+    root.data == node ||
+    (dist = depth(root.left, node)) >= 0 ||
+    (dist = depth(root.right, node)) >= 0
+  ) {
+    return dist + 1;
+  }
+  return dist;
+};
+
+const isBalanced = (root) => {
+  if (root == null) return true;
+
+  let leftTree = height(root.left);
+  let rightTree = height(root.right);
+
+  if (
+    Math.abs(leftTree - rightTree) <= 1 &&
+    isBalanced(root.left) == true &&
+    isBalanced(root.right) == true
+  )
+    return true;
+
+  return false;
+};
+
+const rebalance = (root) => {
+  if (isBalanced(root) == false) {
+    root = tree(inorder(root));
+    return root;
+  } else {
+    return 'Tree is balanced';
+  }
+};
+
+root = tree([
+  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 56, 85, 96, 115, 153,
+]);
 prettyPrint(root);
-//console.log(levelOrder(root));
-//console.log(inorder(root));
-//console.log(preorder(root));
-console.log(postorder(root));
+console.log(height(root));
+console.log(depth(root, findNode(6345)));
+console.log(isBalanced(root));
+insertNode(root, 101);
+insertNode(root, 102);
+insertNode(root, 103);
+insertNode(root, 104);
+insertNode(root, 105);
+insertNode(root, 106);
+insertNode(root, 107);
+insertNode(root, 108);
+insertNode(root, 109);
+insertNode(root, 110);
+prettyPrint(root);
+console.log(isBalanced(root));
+root = rebalance(root);
+prettyPrint(root);
