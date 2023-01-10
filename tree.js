@@ -136,36 +136,78 @@ const levelOrder = (root = null, func = null) => {
 
 const inorder = (root = null) => {
   if (root == null) return;
-  let inorderBST = [];
   let stack = [];
-  let temp = root;
-  while (temp != null || stack.length != 0) {
-    if (temp != null) {
-      stack.unshift(temp);
-      temp = temp.left;
+  let currentNode = root;
+  let inorderBST = [];
+
+  while (stack.length != 0 || currentNode != null) {
+    if (currentNode != null) {
+      stack.push(currentNode);
+      currentNode = currentNode.left;
     } else {
-      temp = stack[0];
-      stack.shift();
-      if (temp.data) {
-        console.log(temp.data);
-        inorderBST.push(temp.data);
-      }
-      temp = temp.right;
+      currentNode = stack.pop();
+      console.log(currentNode.data);
+      inorderBST.push(currentNode.data);
+      currentNode = currentNode.right;
     }
   }
+
   return inorderBST;
 };
 
 const preorder = (root = null) => {
-  if (root == null) return 'Nothing';
-};
-const postorder = (root = null) => {
-  if (root == null) return 'Nothing';
+  if (root == null) return;
+  let stack = [];
+  let currentNode = root;
+  stack.push(root);
+  let preorderBST = [];
+
+  while (stack.length != 0) {
+    currentNode = stack.pop();
+    console.log(currentNode.data);
+    preorderBST.push(currentNode.data);
+    if (currentNode.right != null) stack.push(currentNode.right);
+    if (currentNode.left != null) stack.push(currentNode.left);
+  }
+
+  return preorderBST;
 };
 
-const traverse = (method, root) => {};
+const postorder = (root = null) => {
+  if (root == null) return;
+  let mainStack = [];
+  let rightStack = [];
+  let currentNode = root;
+  let postorderBST = [];
+
+  while (mainStack.length != 0 || currentNode != null) {
+    if (currentNode != null) {
+      if (currentNode.right != null) {
+        rightStack.push(currentNode.right);
+      }
+      mainStack.push(currentNode);
+      currentNode = currentNode.left;
+    } else {
+      currentNode = mainStack[mainStack.length - 1];
+      if (
+        rightStack.length != 0 &&
+        currentNode.right == rightStack[rightStack.length - 1]
+      ) {
+        currentNode = rightStack.pop();
+      } else {
+        console.log(currentNode.data);
+        postorderBST.push(currentNode.data);
+        mainStack.pop();
+        currentNode = null;
+      }
+    }
+  }
+  return postorderBST;
+};
 
 root = tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 prettyPrint(root);
-console.log(levelOrder(root));
-console.log(inorder(root));
+//console.log(levelOrder(root));
+//console.log(inorder(root));
+//console.log(preorder(root));
+console.log(postorder(root));
