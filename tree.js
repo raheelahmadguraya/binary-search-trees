@@ -255,8 +255,6 @@ root = tree([
   1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 56, 85, 96, 115, 153,
 ]);
 prettyPrint(root);
-console.log(height(root));
-console.log(depth(root, findNode(6345)));
 console.log(isBalanced(root));
 insertNode(root, 101);
 insertNode(root, 102);
@@ -272,3 +270,4 @@ prettyPrint(root);
 console.log(isBalanced(root));
 root = rebalance(root);
 prettyPrint(root);
+console.log(isBalanced(root));
